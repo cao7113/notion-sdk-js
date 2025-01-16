@@ -8,4 +8,4 @@ package-lock.json
 /examples/**/.env
 
 .vscode
-
+.env*
