@@ -6,7 +6,7 @@ config()
 const pageId = process.env.NOTION_PAGE_ID
 const apiKey = process.env.NOTION_API_KEY
 
-const notion = new Client({ auth: apiKey })
+const notion = new Client({ auth: apiKey, logLevel: "debug" })
 
 /* 
 ---------------------------------------------------------------------------

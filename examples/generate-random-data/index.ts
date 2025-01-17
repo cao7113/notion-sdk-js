@@ -1,6 +1,6 @@
 // Find the official Notion API client @ https://  github.com/makenotion/notion-sdk-js/
 // npm install @notionhq/client
-import { Client } from "@notionhq/client"
+import { Client, LogLevel } from "@notionhq/client"
 import {
   CreatePageParameters,
   GetDatabaseResponse,
@@ -14,7 +14,10 @@ config()
 
 import * as faker from "faker"
 
-const notion = new Client({ auth: process.env["NOTION_KEY"] })
+const notion = new Client({
+  auth: process.env["NOTION_KEY"],
+  logLevel: LogLevel.DEBUG,
+})
 
 const startTime = new Date()
 startTime.setSeconds(0, 0)
@@ -249,7 +252,7 @@ async function exerciseWriting(
 ) {
   console.log("\n\n********* Exercising Writing *********\n\n")
 
-  const RowsToWrite = 10
+  const RowsToWrite = 3
 
   // generate a bunch of fake pages with fake data
   for (let i = 0; i < RowsToWrite; i++) {
@@ -372,31 +375,56 @@ async function exerciseFilters(
 }
 
 async function main() {
-  // Find the first database this bot has access to
-  const databases = await notion.search({
-    filter: {
-      property: "object",
-      value: "database",
-    },
-  })
+  // // Find the first database this bot has access to
+  // const databases = await notion.search({
+  //   filter: {
+  //     property: "object",
+  //     value: "database",
+  //   },
+  //   // sort: {
+  //   //   timestamp: "last_edited_time",
+  //   //   direction: "descending",
+  //   //   // direction: "ascending",
+  //   // },
+  // })
 
-  if (databases.results.length === 0) {
-    throw new Error("This bot doesn't have access to any databases!")
-  }
+  // if (databases.results.length === 0) {
+  //   throw new Error("This bot doesn't have access to any databases!")
+  // }
 
-  const database = databases.results[0]
-  if (!database) {
-    throw new Error("This bot doesn't have access to any databases!")
-  }
+  // const database = databases.results[0]
+  // if (!database) {
+  //   throw new Error("This bot doesn't have access to any databases!")
+  // }
 
-  // Get the database properties out of our database
-  const { properties } = await notion.databases.retrieve({
-    database_id: database.id,
-  })
+  // // console.log("found databases: ", databases.results.length)
+  // // const dbs = databases.results.map(item =>
+  // //   _.pick(item, [
+  // //     "title",
+  // //     "url",
+  // //     "last_edited_time",
+  // //     "created_time",
+  // //     "properties",
+  // //   ])
+  // // )
+  // // console.log(_.take(dbs, 3))
+  // // return
+
+  // https://www.notion.so/shareupme/17e673e59ab6806bb4c4e204cf5d43cd?v=b599187714a54cd085334ed00d7e9647&pvs=4
+  const testDbId = "17e673e59ab6806bb4c4e204cf5d43cd"
+  const database = await notion.databases.retrieve({ database_id: testDbId })
+  // console.log(database)
+
+  // // Get the database properties out of our database
+  // const { properties } = await notion.databases.retrieve({
+  //   database_id: database.id,
+  // })
+  const { properties } = database
+  // console.log(properties)
 
   await exerciseWriting(database.id, properties)
   await exerciseReading(database.id, properties)
-  await exerciseFilters(database.id, properties)
+  // await exerciseFilters(database.id, properties)
 }
 
 main()
