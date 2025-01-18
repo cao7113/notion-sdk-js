@@ -40,6 +40,8 @@ app.post("/databases", async function (request, response) {
       },
     })
     response.json({ message: "success!", data: newDb })
+    // https://www.notion.so/shareupme/17f673e59ab68109a64aef563436b0c0?v=17f673e59ab6818cb0a3000cb6be0d57&pvs=4
+    console.log(newDb)
   } catch (error) {
     response.json({ message: "error", error })
   }
@@ -82,6 +84,8 @@ app.post("/pages", async function (request, response) {
       ],
     })
     response.json({ message: "success!", data: newPage })
+    console.log(newPage)
+    // https://www.notion.so/shareupme/test-page-in-demo-db-17f673e59ab681599803e562003e4f62?pvs=4
   } catch (error) {
     response.json({ message: "error", error })
   }
@@ -110,6 +114,7 @@ app.post("/blocks", async function (request, response) {
       ],
     })
     response.json({ message: "success!", data: newBlock })
+    console.log(newBlock)
   } catch (error) {
     response.json({ message: "error", error })
   }
@@ -133,6 +138,7 @@ app.post("/comments", async function (request, response) {
       ],
     })
     response.json({ message: "success!", data: newComment })
+    console.log(newComment)
   } catch (error) {
     response.json({ message: "error", error })
   }
@@ -140,5 +146,7 @@ app.post("/comments", async function (request, response) {
 
 // listen for requests :)
 const listener = app.listen(process.env.PORT, function () {
-  console.log("Your app is listening on port " + listener.address().port)
+  const addr = listener.address()
+  console.log(addr)
+  console.log(`Your app is listening on port http://localhost:${addr.port}`)
 })

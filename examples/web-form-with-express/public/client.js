@@ -40,6 +40,7 @@ const appendApiResponse = function (apiResponse, el) {
   if (apiResponse.data.url) {
     const newAnchorTag = document.createElement("a")
     newAnchorTag.setAttribute("href", apiResponse.data.url)
+    newAnchorTag.setAttribute("target", "_blank")
     newAnchorTag.innerText = apiResponse.data.url
     el.appendChild(newAnchorTag)
   }
